@@ -1,3 +1,9 @@
+<%-- 
+    Document   : account
+    Created on : Oct 27, 2023, 1:55:04 PM
+    Author     : minht
+--%>
+
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page import="java.util.List"%>
 <%@page import="sample.users.UserDTO"%>
@@ -138,8 +144,7 @@
                 justify-content: space-between;
                 align-items: center;
             }
-            .items-controller,
-            .search{
+            .items-controller {
                 flex-shrink: 0;
                 display: flex;
                 align-content: center;
@@ -156,10 +161,9 @@
             }
             .search > input{
                 padding: 8px;
-                border: none;
-                outline: navajowhite;
-                margin: 0 0 0 20px;
-                background: white;
+                border: 1px solid black;
+                margin: 0;
+                background: transparent;
             }
             .field{
                 width: 90%;
@@ -167,11 +171,8 @@
                 margin: auto;
             }
             table{
-                width: 100%;
                 margin: 2px auto;
                 table-layout: auto;
-                color: #757575;
-                background-color: #ffff;
                 border-collapse: collapse;
                 border-spacing: 0;
                 text-align: left;
@@ -217,8 +218,6 @@
                 font-family: sans-serif;
                 font-size: 13px;
             }
-            i.fa-edit{color: lime;}
-            i.fa-trash{color: red;}
 
         </style>
     </head>
@@ -305,20 +304,18 @@
                         </select>
                         <h5>Per Page</h5>
                     </div>
-                    <form action="MainController" method="POST">
-                        <div class="search">
-                            <input type="text" name="search" value="${param.search}" id="search"  placeholder="Search">
-                            <input type="submit" name="action" value="Search"/>
-                        </div>
-                    </form>
+                    <div class="search" style="display: flex; justify-content: space-around; align-items: center;">
+                        <p style="margin: 0 10px 0 0 ; padding: 0; font-size: 18px; font-weight: 500;">Sreach</p>
+                        <input type="text" name="" id="search" placeholder="Search...">
+                    </div>                
                 </section>
-                ${requestScope.ERROR}
+                <p class="text-danger">${requestScope.ERROR}</p>
                 <c:if test="${requestScope.LIST_USER != null}">
                     <c:if test="${not empty requestScope.LIST_USER}">
                         <section class="field">
-                            <table>
+                            <table style="width: 140vh;">
                                 <thead>
-                                    <tr>
+                                    <tr style="color: black;">
                                         <th style="text-align: center;">No.</th>
                                         <th style="text-align: center;">User ID</th>
                                         <th>Full Name</th>
@@ -326,66 +323,69 @@
                                         <th style="text-align: center;">Password</th>
                                         <th style="text-align: center;">Role ID</th>
                                         <th style="text-align: center;">Status</th>
-                                        <th>Edit</th> 
-                                        <th>Delete</th> 
+                                        <th style="text-align: center;">Edit</th> 
+                                        <th style="text-align: center;">Delete</th> 
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <c:forEach var="user" varStatus="counter" items="${requestScope.LIST_USER}">
-                                    <form action="MainController" method="POST">
                                         <tr>
-                                            <td style="width: 3rem;  text-align: center;">${counter.count}</td>
-                                            <td style="width: 5rem;">
-                                                <input style="width: 100%; border: none;  text-align: center;" type="text" name="userID" value="${user.userID}" readonly=""/>
-                                            </td>
-                                            <td style="width: 15rem;">
-                                                <input style="width: 100%; border: none;" type="text" name="userName" value="${user.userName}" required=""/>
-                                            </td>
-                                            <td style="width: 20rem;">
-                                                <input style="width: 100%; border: none;" type="text" name="email" value="${user.email}" required=""/>
-                                            </td>
-                                            <td style="width: 7rem;">
-                                                <input style="width: 100%; border: none;  text-align: center;"  type= "password" name="password" value="${user.password}" readonly=""/>
-                                            </td>
-                                            <td style="width: 5rem;">
-                                                <input style="width: 100%; border: none; text-align: center;" type="text" name="roleID" value="${user.roleID}" required=""/>
-                                            </td>
-                                            <td style="width: 5rem;">
-                                                <input style="width: 100%; border: none; " type="checkbox" name="roleID" value="${user.status}"  id="myCheckbox" ${user.status == 1 ? 'checked' : ''} required=""/>
-                                            </td>
-                                            <td style="width: 5rem;">
-                                                <input style="width: 100%; border: none; " type="submit" name="action" value="Update"/>
-                                                <input type="hidden" name="search" value="${param.search}"/>
-                                            </td>
-                                            <td>
-                                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop-${user.userID}">
-                                                    Delete
-                                                </button>
-                                                <c:url var="delete" value="MainController">
-                                                    <c:param name="action" value="Delete"></c:param>
-                                                    <c:param name="userID" value="${user.userID}"></c:param>
-                                                    <c:param name="search" value="${param.search}"></c:param> 
-                                                </c:url>  
-                                                <div class="modal fade" id="staticBackdrop-${user.userID}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                                                    <div class="modal-dialog">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h1 class="modal-title fs-5" id="staticBackdropLabel">Confirm Deletion.</h1>
-                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                When you delete this account, all information related to this account will be deleted. Are you sure you want to delete this account?
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                                <button type="button" class="btn btn-primary"><a style="color: white" href="${delete}">Delete</a></button>
-                                                            </div>
+                                    <form action="MainController" method="POST">
+                                        <td style="width: 3rem;  text-align: center;">${counter.count}</td>
+                                        <td style="width: 5rem;">
+                                            <input style="width: 100%; border: none;  text-align: center;" type="text" name="userID" value="${user.userID}" readonly=""/>
+                                        </td>
+                                        <td style="width: 15rem;">
+                                            <input style="width: 100%; border: none;" type="text" name="userName" value="${user.userName}" required="" id="userName-${user.userID}"/>
+                                        </td>
+                                        <td style="width: 20rem;">
+                                            <input style="width: 100%; border: none;" type="text" name="email" value="${user.email}" required=""/>
+                                        </td>
+                                        <td style="width: 7rem;">
+                                            <input style="width: 100%; border: none;  text-align: center;"  type= "password" name="password" value="${user.password}" readonly=""/>
+                                        </td>
+                                        <td style="width: 5rem;">
+                                            <input style="width: 100%; border: none; text-align: center;" type="text" name="roleID" value="${user.roleID}" required=""/>
+                                        </td>
+                                        <td style="width: 5rem; text-align: center;">
+                                            <input type="hidden" name="status" value="${user.status}" class="statusInput" />
+                                            <button style="width: 80%; border: none; text-align: center; color: white; border-radius: 10px; font-size: 12px;" class="actionButton" type="button">Action</button>
+                                        </td>
+                                        <td style="width: 5rem;">
+                                            <button style="width: 100%;" type="submit" name="action" value="Update" class="btn btn-warning">
+                                                Update
+                                            </button>
+                                            <input type="hidden" name="search" value="${param.search}"/>
+                                        </td>
+                                        <td style="width: 5rem;">
+                                            <button style="width: 100%;" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#staticBackdrop-${user.userID}">
+                                                Delete
+                                            </button>
+                                            <c:url var="delete" value="MainController">
+                                                <c:param name="action" value="Delete"></c:param>
+                                                <c:param name="userID" value="${user.userID}"></c:param>
+                                                <c:param name="search" value="${param.search}"></c:param> 
+                                            </c:url>  
+                                            <div class="modal fade" id="staticBackdrop-${user.userID}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h1 class="modal-title fs-5 text-dark" id="staticBackdropLabel">Confirm Deletion.</h1>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body text-dark" style="font-weight: 500;">
+                                                            When you delete this account, all information related to this account will be deleted. Are you sure you want to delete this account?
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                            <button type="button" class="btn btn-danger"><a style="text-decoration: none; color: rgb(255, 255, 255);" href="${delete}">Delete</a></button>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </td>
-                                        </tr>
+                                            </div>
+                                        </td>
                                     </form>
+                                    </tr>
                                 </c:forEach>
                                 </tbody>
                             </table>
@@ -401,134 +401,66 @@
                 </c:if>
             </div>
         </div>
-        <!-- /#page-content-wrapper -->
     </div>
 
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
     <script>
+
+        const statusInputs = document.querySelectorAll(".statusInput");
+        statusInputs.forEach(function (statusInput) {
+            const actionButton = statusInput.nextElementSibling;
+            if (statusInput.value === "0") {
+                actionButton.style.backgroundColor = "#db1b1b";
+            } else if (statusInput.value === "1") {
+                actionButton.style.backgroundColor = "#11bd0e";
+            }
+        });
+
+        statusInputs.forEach(function (statusInput) {
+            const actionButton = statusInput.nextElementSibling;
+
+            actionButton.addEventListener("click", function () {
+                const currentStatus = statusInput.value;
+
+                if (currentStatus === "0") {
+
+                    statusInput.value = "1";
+                    actionButton.style.backgroundColor = "#11bd0e";
+                } else {
+
+                    statusInput.value = "0";
+                    actionButton.style.backgroundColor = "#db1b1b";
+                }
+            });
+        });
+
+
+        const searchInput = document.getElementById("search");
+        const tableRows = document.querySelectorAll("table tbody tr");
+
+        searchInput.addEventListener("input", function() {
+            const searchText = searchInput.value.toLowerCase();
+
+            tableRows.forEach(function(row) {
+                const userName = row.querySelector("td:nth-child(4) input").value.toLowerCase();
+
+                if (userName.includes(searchText)) {
+                    row.style.display = "table-row";
+                } else {
+                    row.style.display = "none";
+                }
+            });
+        });
+        
         var el = document.getElementById("wrapper");
         var toggleButton = document.getElementById("menu-toggle");
 
         toggleButton.onclick = function () {
             el.classList.toggle("toggled");
         };
-
-        var tbody = document.querySelector("tbody");
-        var pageUl = document.querySelector(".pagination");
-        var itemShow = document.querySelector("#itemperpage");
-        var tr = tbody.querySelectorAll("tr");
-        var emptyBox = [];
-        var index = 1;
-        var itemPerPage = 8;
-
-        for (let i = 0; i < tr.length; i++) {
-            emptyBox.push(tr[i]);
-        }
-
-        itemShow.onchange = giveTrPerPage;
-        function giveTrPerPage() {
-            itemPerPage = Number(this.value);
-            displayPage(itemPerPage);
-            pageGenerator(itemPerPage);
-            getpagElement(itemPerPage);
-        }
-
-        function displayPage(limit) {
-            tbody.innerHTML = '';
-            for (let i = 0; i < limit; i++) {
-                tbody.appendChild(emptyBox[i]);
-            }
-            const  pageNum = pageUl.querySelectorAll('.list');
-            pageNum.forEach(n => n.remove());
-        }
-        displayPage(itemPerPage);
-
-        function pageGenerator(getem) {
-            const num_of_tr = emptyBox.length;
-            if (num_of_tr <= getem) {
-                pageUl.style.display = 'none';
-            } else {
-                pageUl.style.display = 'flex';
-                const num_Of_Page = Math.ceil(num_of_tr / getem);
-                for (i = 1; i <= num_Of_Page; i++) {
-                    const li = document.createElement('li');
-                    li.className = 'list';
-                    const a = document.createElement('a');
-                    a.href = '#';
-                    a.innerText = i;
-                    a.setAttribute('data-page', i);
-                    li.appendChild(a);
-                    pageUl.insertBefore(li, pageUl.querySelector('.next'));
-                }
-            }
-        }
-        pageGenerator(itemPerPage);
-        let pageLink = pageUl.querySelectorAll("a");
-        let lastPage = pageLink.length - 2;
-
-        function pageRunner(page, items, lastPage, active) {
-            for (button of page) {
-                button.onclick = e => {
-                    const page_num = e.target.getAttribute('data-page');
-                    const page_mover = e.target.getAttribute('id');
-                    if (page_num != null) {
-                        index = page_num;
-
-                    } else {
-                        if (page_mover === "next") {
-                            index++;
-                            if (index >= lastPage) {
-                                index = lastPage;
-                            }
-                        } else {
-                            index--;
-                            if (index <= 1) {
-                                index = 1;
-                            }
-                        }
-                    }
-                    pageMaker(index, items, active);
-                }
-            }
-
-        }
-        var pageLi = pageUl.querySelectorAll('.list');
-        pageLi[0].classList.add("active");
-        pageRunner(pageLink, itemPerPage, lastPage, pageLi);
-
-        function getpagElement(val) {
-            let pagelink = pageUl.querySelectorAll("a");
-            let lastpage = pagelink.length - 2;
-            let pageli = pageUl.querySelectorAll('.list');
-            pageli[0].classList.add("active");
-            pageRunner(pagelink, val, lastpage, pageli);
-        }
-
-
-
-        function pageMaker(index, item_per_page, activePage) {
-            const start = item_per_page * index;
-            const end = start + item_per_page;
-            const current_page = emptyBox.slice((start - item_per_page), (end - item_per_page));
-            tbody.innerHTML = "";
-            for (let j = 0; j < current_page.length; j++) {
-                let item = current_page[j];
-                tbody.appendChild(item);
-            }
-            Array.from(activePage).forEach((e) => {
-                e.classList.remove("active");
-            });
-            activePage[index - 1].classList.add("active");
-        }
-
-
-
-
-
-        // search content 
-
     </script>
 </body>
 

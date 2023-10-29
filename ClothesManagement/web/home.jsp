@@ -306,8 +306,8 @@
             </div>
             <div class="offcanvas-body search-body">
                 <div class="container text-center">
-                    <div class="row row-cols-4 list-pro" >
-
+                    <div class="row row-cols-4 list-pro" >   
+                        <div id="noResultMessage" style="display: none;">We don't have this product!</div>                     
                         <c:if test="${sessionScope.LIST_PRODUCT == null || sessionScope.LIST_PRODUCT.size() == 0}">
                             <div class="offcanvas-body">
                                 <p class="text-black text-center" style="top: 50%; left: 50%;">YOUR DEPOTS IS EMPTY</p>
@@ -327,7 +327,7 @@
                                             <p class="col price text-secondary  text-sm-start">$${product.price}</p>
                                         </a>
                                     </div>
-                                </c:forEach>
+                                </c:forEach> 
                             </c:if>
                         </c:if>
                     </div>
@@ -349,7 +349,7 @@
 
                 <c:if test="${sessionScope.CART != null}">
                     <c:if test="${sessionScope.CART.getCart().size() != 0}">
-                        <div class="offcanvas-body container">                          
+                        <div class="offcanvas-body container">                                                
                             <c:forEach items="${sessionScope.CART.getCart()}" var="cartOrder" varStatus="counter">
                                 <div class="row row-cols-3" id="product-list" style="padding-left: 20px ;">
                                     <div class="col-1" style="width: 150px;">
@@ -446,11 +446,31 @@
                         }
                     });
 
+                    var scrolled = false;
+
                     header.addEventListener("mouseover", function () {
+                        if (!scrolled) {
+                            logo.src = "https://elpisclothing.com/cdn/shop/files/output-onlinepngtools_125x.png?v=1614720781";
+                        }
+                    });
+
+                    header.addEventListener("mouseout", function () {
+                        if (!scrolled) {
+                            logo.src = "https://elpisclothing.com/cdn/shop/files/output-onlinepngtools_5928c853-b189-4927-af34-43b839cdfea8_125x.png?v=1614721042";
+                        }
+                    });
+
+                    window.addEventListener("scroll", function () {
+                        scrolled = true;
                         logo.src = "https://elpisclothing.com/cdn/shop/files/output-onlinepngtools_125x.png?v=1614720781";
                     });
-                    header.addEventListener("mouseout", function () {
-                        logo.src = "https://elpisclothing.com/cdn/shop/files/output-onlinepngtools_5928c853-b189-4927-af34-43b839cdfea8_125x.png?v=1614721042";
+
+
+                    window.addEventListener("scroll", function () {
+                        if (window.scrollY === 0) {
+                            logo.src = "https://elpisclothing.com/cdn/shop/files/output-onlinepngtools_5928c853-b189-4927-af34-43b839cdfea8_125x.png?v=1614721042";
+                            scrolled = false;
+                        }
                     });
 
                     const searchInput = document.getElementById('searchInput');
@@ -479,19 +499,28 @@
                         const storiette = document.getElementById("product-list")
                         const product = document.querySelectorAll(".product")
                         const pname = document.getElementsByTagName("h6")
+                        let hasResults = false;
                         for (var i = 0; i < pname.length; i++) {
                             let match = product[i].getElementsByTagName("h6")[0];
-                            console.log(match);
                             if (match) {
                                 let textual = match.textContent || match.innerHTML
                                 if (textual.toUpperCase().indexOf(searchbox) > -1) {
                                     product[i].style.display = "";
+                                    hasResults = true;
                                 } else {
                                     product[i].style.display = "none";
                                 }
                             }
+                        }                       
+                        const noResultMessage = document.getElementById("noResultMessage");
+                        console.log(noResultMessage);
+                        if (!hasResults) {
+                            noResultMessage.style.display = "";
+                        } else {
+                            noResultMessage.style.display = "none";
                         }
                     }
+
         </script>
 
     </body>

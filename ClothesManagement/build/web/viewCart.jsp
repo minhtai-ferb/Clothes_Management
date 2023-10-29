@@ -285,7 +285,7 @@
 
                 if (increaseButton.clicked) {
                     input.value = currentValue + 1;
-                } else if (decreaseButton.clicked && currentValue > 0) {
+                } else if (decreaseButton.clicked && currentValue > 1) {
                     input.value = currentValue - 1;
                 }
             }

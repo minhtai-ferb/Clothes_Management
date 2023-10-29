@@ -23,7 +23,7 @@ public class UserDAO {
     
     private static final String SEARCH = "SELECT userID, userName, email, roleID, status from tblAccount WHERE userName like ?";
     
-    private static final String UPDATE = "UPDATE tblAccount SET userName=?, roleID=?, email=? WHERE userID=?";
+    private static final String UPDATE = "UPDATE tblAccount SET userName=?, roleID=?, email=?, status=? WHERE userID=?";
     
     private static final String DELETE = "DELETE tblAccount WHERE userID=?";
     
@@ -117,7 +117,9 @@ public class UserDAO {
                 ptm.setString(1, user.getUserName());
                 ptm.setString(2, user.getRoleID());
                 ptm.setString(3, user.getEmail());
-                ptm.setInt(4, user.getUserID());
+                boolean status = user.getStatus().equals("1") ? true : false;
+                ptm.setBoolean(4, status);
+                ptm.setInt(5, user.getUserID());
                 check = ptm.executeUpdate() > 0 ? true : false;
             }
         } catch (Exception e) {

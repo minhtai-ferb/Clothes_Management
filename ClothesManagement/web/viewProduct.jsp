@@ -21,7 +21,7 @@
     </style>
 
     <body class="container-fluid">
-        <c:if test="${sessionScope.LOGIN_USER == 'AD'}">
+        <c:if test="${sessionScope.LOGIN_USER.roleID == 'AD'}">
             <c:redirect url="login.jsp"></c:redirect>
         </c:if>
         <header class="container-fluid text-center" id="header">

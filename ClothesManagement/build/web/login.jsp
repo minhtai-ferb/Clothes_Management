@@ -185,9 +185,9 @@
 
 
         <main class="main" style="display: flex; justify-content: center; align-items: center ;height: 90vh;">
-            <button class="back-button" onclick="goBack()">
+            <a class="back-button" href="home.jsp">
                 <i class="fas fa-chevron-left"></i> Back
-            </button>
+            </a>
             <div style="text-align: center; width: 400px;">
                 <p style="margin: 0; padding: 0; font-size: 20px; font-weight: 610;">LOGIN</p>
                 <p style="margin: 0; padding: 20px 0 20px 0; font-size: 14px; font-weight: 450; color: #5a5959;">Please enter your e-mail and password:</p>
@@ -256,8 +256,5 @@
                             }
                         }
                     }
-                    function goBack() {
-                window.location.href = document.referrer;
-            }
     </script>       
 </html>

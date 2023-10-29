@@ -6,12 +6,13 @@
 package sample.controllers;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import sample.users.UserDAO;
 import sample.users.UserDTO;
 
@@ -19,38 +20,28 @@ import sample.users.UserDTO;
  *
  * @author minht
  */
-@WebServlet(name = "UpdateController", urlPatterns = {"/UpdateController"})
-public class UpdateController extends HttpServlet {
+@WebServlet(name = "AccountAdminLoad", urlPatterns = {"/AccountAdminLoad"})
+public class AccountAdminLoad extends HttpServlet {
 
-    private static final String ERROR = "SearchController";
-    private static final String SUCCESS = "SearchController";
-
+    private static final String SUCCESS = "account.jsp";
+    private static final String ERROR = "account.jsp";
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
         try {
-            int userID = Integer.parseInt(request.getParameter("userID"));
-            String userName = request.getParameter("userName");
-            String email = request.getParameter("email");
-            String roleID = request.getParameter("roleID");
-            String status = request.getParameter("status");
+            String search = ("");
             UserDAO dao = new UserDAO();
-            HttpSession sesison = request.getSession();
-            UserDTO loginUser = (UserDTO) sesison.getAttribute("LOGIN_USER");
-            UserDTO user = new UserDTO(userID, userName, email, "", roleID, status);
-
-            boolean checkUpdate = dao.update(user);
-            if (checkUpdate) {
-                if (loginUser.getUserID() == userID) {
-                    sesison.setAttribute("LOGIN_USER", user);
-                }
+            List<UserDTO> listUser = dao.getListUser(search);
+            if (listUser.size() > 0) {
+                request.setAttribute("LIST_USER", listUser);
                 url = SUCCESS;
             } else {
-                request.setAttribute("ERROR", "Can't update account!");
+                request.setAttribute("ERROR", "Don't have any accounts.");
             }
         } catch (Exception e) {
-            log("Error at DeleteController: " + e.toString());
+            log("Error at SearchServlet " + e.toString());
         } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }

@@ -74,7 +74,7 @@ public class MainController extends HttpServlet {
     private static final String PAY_NOW_CONTROLLER = "PayNowController";
     
     private static final String ACCOUNT_ADMIN = "Account_Admin";
-    private static final String ACCOUNT_ADMIN_CONTROLLER = "account.jsp";       
+    private static final String ACCOUNT_ADMIN_CONTROLLER = "AccountAdminLoad";       
     
     private static final String DASHBOARD = "Dashboard";
     private static final String DASHBOARD_CONTROLLER = "dashboard.jsp";        
