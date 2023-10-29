@@ -193,7 +193,7 @@
             <div style="display: flex; justify-content: center; align-self: center; margin-top: 20px;">
                 <h4 style="font-size: 20px; font-weight: 500;">CART</h4>
             </div>  
-            
+
             <button class="back-button" onclick="goBack()">
                 <i class="fas fa-chevron-left"></i> Back
             </button>
@@ -237,9 +237,10 @@
                                     <td style="width: 180px; text-align: center;padding-bottom: 50px 0 50px 0; ">
                                         <div class="" style="margin: 0; padding-top: 0; display: flex; align-items: center; justify-content: center;">
                                             <span  class="input-group" style="width: 100px; border: 0.1px solid rgb(190, 190, 190); display: flex; align-items: center; justify-content: center;"> 
-                                                <button style="border-radius: 0; border: none;" class="btn" type="submit" name="action" value="Update_Product" id="increaseButton">+</button>                                               
-                                                <input style="border: none; text-align: center; font-size: 14px; color: #636363; font-weight: 450;" type="text" name="editQuantity" required="" class="input-num" value="${cartOrder.value.quantityOrder}" id="quantityInput"/>
-                                                <button style="border-radius: 0; border: none;" class="btn" type="submit" name="action" value="Update_Product" id="decreaseButton">-</button>
+
+                                                <button style="border-radius: 0; border: none;" class="btn increaseButton" type="submit" name="action" value="Update_Product">+</button>
+                                                <input style="border: none; text-align: center; font-size: 14px; color: #636363; font-weight: 450;" type="text" name="editQuantity" required="" class="input-num quantityInput" value="${cartOrder.value.quantityOrder}" />
+                                                <button style="border-radius: 0; border: none;" class="btn decreaseButton" type="submit" name="action" value="Update_Product">-</button>
                                             </span>
                                         </div> 
                                         <button style="font-weight: 400; font-size: 14px; border-bottom: 0.5px solid grey; border-radius: 0; padding:10px 0 0 0;" type="submit" class="btn" name="action" value="Remove_Product">
@@ -275,30 +276,35 @@
         </main>
 
         <script>
-            const quantityInput = document.getElementById('quantityInput');
-            const increaseButton = document.getElementById('increaseButton');
-            const decreaseButton = document.getElementById('decreaseButton');
+            const quantityInputs = document.querySelectorAll('.quantityInput');
+            const increaseButtons = document.querySelectorAll('.increaseButton');
+            const decreaseButtons = document.querySelectorAll('.decreaseButton');
 
-            function updateQuantity() {
-                const currentValue = parseInt(quantityInput.value);
+            function updateQuantity(input, increaseButton, decreaseButton) {
+                const currentValue = parseInt(input.value);
 
                 if (increaseButton.clicked) {
-                    quantityInput.value = currentValue + 1;
+                    input.value = currentValue + 1;
                 } else if (decreaseButton.clicked && currentValue > 0) {
-                    quantityInput.value = currentValue - 1;
+                    input.value = currentValue - 1;
                 }
             }
 
-            increaseButton.addEventListener('click', function () {
-                increaseButton.clicked = true;
-                decreaseButton.clicked = false;
+            increaseButtons.forEach(function (button) {
+                button.addEventListener('click', function () {
+                    button.clicked = true;
+                    button.nextElementSibling.clicked = false;
+                    updateQuantity(button.nextElementSibling, button, button.nextElementSibling);
+                });
             });
 
-            decreaseButton.addEventListener('click', function () {
-                decreaseButton.clicked = true;
-                increaseButton.clicked = false;
+            decreaseButtons.forEach(function (button) {
+                button.addEventListener('click', function () {
+                    button.clicked = true;
+                    button.previousElementSibling.clicked = false;
+                    updateQuantity(button.previousElementSibling, button.previousElementSibling.previousElementSibling, button);
+                });
             });
-
 
             const searchInput = document.getElementById('searchInput');
             const offcanvasBody = document.querySelector('.search-body');
