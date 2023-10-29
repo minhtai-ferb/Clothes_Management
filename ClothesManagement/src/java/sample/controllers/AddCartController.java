@@ -33,28 +33,35 @@ public class AddCartController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
         try {
+            HttpSession sesison = request.getSession();
             int detailID;
             int proID = Integer.parseInt(request.getParameter("proID"));
             String color = request.getParameter("color");
             String size = request.getParameter("size");
-
+            Cart cart = (Cart) sesison.getAttribute("CART");
+            OrderDetailDTO detailOrder = null; 
+            
+            //check quantity
             DepotsDAO daoDepots = new DepotsDAO();
             DepotsDTO product = daoDepots.getProduct(proID, color, size);
             int depotsID = product.getDeProID();
             String img = product.getColorIMG();
             int quantity = product.getQuantity();
+            int quantityCart;
+            if (cart == null || cart.getCart().isEmpty()) {
+                quantityCart = 0;
+            } else {
+                quantityCart = cart.getQuantity(depotsID);
+            }           
             boolean checkQuantiry = true;
-            if (quantity - 1 < 0) {
+            if (quantity - 1 - quantityCart < 0) {
                 checkQuantiry = false;
             }
-
-            HttpSession sesison = request.getSession();
+       
             ProductDTO productSesison = (ProductDTO) sesison.getAttribute("PRODUCT");
             double price = productSesison.getPrice();
-            String proName = productSesison.getProName();
-
-            OrderDetailDTO detailOrder = null;
-            Cart cart = (Cart) sesison.getAttribute("CART");
+            String proName = productSesison.getProName();            
+                    
             if (checkQuantiry) {
                 if (productSesison != null) {
                     if (cart == null) {
@@ -70,18 +77,18 @@ public class AddCartController extends HttpServlet {
                     }
                     cart.add(detailOrder);
                     sesison.setAttribute("CART", cart);
-                    request.setAttribute("MASSAGE", "Added " + productSesison.getProName() + " - " + 1);
-                    sesison.setAttribute("ERROR_ADD", "");
+                    request.setAttribute("MASSAGE", "Added - " + productSesison.getProName() + " - success!");
+                    request.setAttribute("ERROR_ADD", "");
                     url = SUCCESS;
                 }
             } else {
-                sesison.setAttribute("ERROR_ADD", "Sorry. The product is " + color + " and size " + size + " is sold out.");
+                request.setAttribute("MASSAGE", "");
+                request.setAttribute("ERROR_ADD", "Sorry. The product is " + color + " and size " + size + " is sold out.");
             }
         } catch (Exception e) {
             log("Error at AddController: " + e.toString());
-            e.printStackTrace();
         } finally {
-            response.sendRedirect(url);
+            request.getRequestDispatcher(url).forward(request, response);
         }
     }
 

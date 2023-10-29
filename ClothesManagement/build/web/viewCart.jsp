@@ -20,7 +20,7 @@
 
     </style>
     <body class="container-fluid">
-        <c:if test="${sessionScope.LOGIN_USER == null || sessionScope.LOGIN_USER.roleID ne 'US'}">
+        <c:if test="${sessionScope.LOGIN_USER.roleID == 'AD'}">
             <c:redirect url="login.jsp"></c:redirect>
         </c:if>
         <header class="container-fluid text-center" id="header">
@@ -193,6 +193,10 @@
             <div style="display: flex; justify-content: center; align-self: center; margin-top: 20px;">
                 <h4 style="font-size: 20px; font-weight: 500;">CART</h4>
             </div>  
+            
+            <button class="back-button" onclick="goBack()">
+                <i class="fas fa-chevron-left"></i> Back
+            </button>
 
             <c:if test="${sessionScope.CART == null || sessionScope.CART.getCart().size() == 0}">
                 <div class="offcanvas-body" style="display: flex; align-items: center; justify-content: center; height: 50vh;">
@@ -334,6 +338,9 @@
                         }
                     }
                 }
+            }
+            function goBack() {
+                window.location.href = document.referrer;
             }
 
         </script>

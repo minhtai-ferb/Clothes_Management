@@ -21,7 +21,7 @@
     </style>
 
     <body class="container-fluid">
-        <c:if test="${sessionScope.LOGIN_USER == null || sessionScope.LOGIN_USER.roleID ne 'US'}">
+        <c:if test="${sessionScope.LOGIN_USER == 'AD'}">
             <c:redirect url="login.jsp"></c:redirect>
         </c:if>
         <header class="container-fluid text-center" id="header">
@@ -189,7 +189,10 @@
 
 
 
-        <main class="container-fluid main">          
+        <main class="container-fluid main">   
+            <button class="back-button" onclick="goBack()">
+                <i class="fas fa-chevron-left"></i> Back
+            </button>
             <form action="MainController" method="POST">
                 <c:if test="${sessionScope.PRODUCT != null}">
                     <c:if test="${not empty sessionScope.PRODUCT}">
@@ -214,7 +217,8 @@
                                         <option value="${size}">Size: ${size}</option>
                                     </c:forEach>
                                 </select>
-                                <p style="color: red;">${sessionScope.ERROR_ADD}</p>
+                                <p style="color: green;">${requestScope.MASSAGE}</p>
+                                <p style="color: red;">${requestScope.ERROR_ADD}</p>
                                 <button type="submit" name="action" value="Add_Cart" class="container-fluid addToCart-button">ADD TO CART</button>
                                 <p>Secure and trusted checkout with</p>
                                 <p>PRODUCT DETAILS</p>
@@ -268,6 +272,10 @@
                         }
                     }
                 }
+            }
+
+            function goBack() {
+                window.location.href = document.referrer;
             }
 
         </script>

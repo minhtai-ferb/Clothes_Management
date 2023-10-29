@@ -107,4 +107,18 @@ public class Cart {
         return checkEdit;
     }
 
+    public int getQuantity(int depotsID) {
+        int quantity = 0;
+        if (this.cart == null || this.cart.isEmpty()) {
+            return quantity;
+        }
+        for (Map.Entry<String, OrderDetailDTO> entry : cart.entrySet()) {
+            OrderDetailDTO value = entry.getValue();
+            if (value.getDeProID() == depotsID) {
+                quantity = quantity + value.getQuantityOrder();
+            } 
+        }
+        return quantity;
+    }
+
 }
