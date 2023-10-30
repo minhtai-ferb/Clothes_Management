@@ -77,6 +77,7 @@
                         <div style="width: 550px; padding: 0; margin: 30px 40px 0 20px; display: flex; flex-direction: column; justify-content: end; align-self: start;">
                             <c:set var="address" value="${sessionScope.ADDRESS}"/>
                             <c:set var="user" value="${sessionScope.LOGIN_USER}"/>
+                            <p>${requestScope.ERROR_CONFIRM}</p>
                             <h4>Contact</h4> 
                             <div class="form-floating mb-3" style="width: 100%;">
                                 <input type="email" name="gmail" value="${user.email}" class="form-control" readonly="" id="floatingInputValue" placeholder="name@example.com"/>
@@ -107,8 +108,12 @@
                                 <input type="text" name="phone" value="${address.phone}" class="form-control" id="floatingInputValue" placeholder="Phone"/>
                                 <label for="floatingInputValue">Phone</label>
                             </div>
-
-                            <button class="payNow-button" style="width: 100%;" type="submit" name="action" value="Pay_Now">Pay Now</button>
+                            <h4>Payment</h4>
+                            <select name="payment" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+                                <option value="delivery">Payment on delivery</option>
+                                <option value="VNBANK">Payment via ATM card/Domestic account</option>
+                            </select>
+                            <button class="payNow-button" style="width: 100%;" type="submit" name="action" value="Confirm_Checkout">Pay Now</button>
                         </div>
                     </div>
                     <div class="container-fluid" style="padding: 0; margin: 0; width: 50hv; display: flex; flex-direction: column; align-self: center; justify-content: start; margin: 0; border-left: 0.5px solid rgb(165, 165, 165); height: 100%; background-color: #e8e8e8;">

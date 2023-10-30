@@ -54,10 +54,10 @@ public class MainController extends HttpServlet {
 
     private static final String ADD_CART = "Add_Cart";
     private static final String ADD_CART_CONTROLLER = "AddCartController";
-   
+
     private static final String VIEW_CART = "Edit_Product";
     private static final String VIEW_CART_CONTROLLER = "ViewCartController";
-    
+
     private static final String SEARCH_PRODUCT = "Sreach_Product";
     private static final String SEARCH_PRODUCT_CONTROLLER = "SreachProductController";
 
@@ -72,13 +72,15 @@ public class MainController extends HttpServlet {
 
     private static final String PAY_NOW = "Pay_Now";
     private static final String PAY_NOW_CONTROLLER = "PayNowController";
-    
-    private static final String ACCOUNT_ADMIN = "Account_Admin";
-    private static final String ACCOUNT_ADMIN_CONTROLLER = "AccountAdminLoad";       
-    
-    private static final String DASHBOARD = "Dashboard";
-    private static final String DASHBOARD_CONTROLLER = "dashboard.jsp";        
 
+    private static final String ACCOUNT_ADMIN = "Account_Admin";
+    private static final String ACCOUNT_ADMIN_CONTROLLER = "AccountAdminLoad";
+
+    private static final String CONFIRM_CHECKOUT = "Confirm_Checkout";
+    private static final String CONFIRM_CHECKOUT_CONTROLLER = "ConfirmCheckoutController";
+
+    private static final String DASHBOARD = "Dashboard";
+    private static final String DASHBOARD_CONTROLLER = "dashboard.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -128,6 +130,8 @@ public class MainController extends HttpServlet {
                 url = ACCOUNT_ADMIN_CONTROLLER;
             } else if (DASHBOARD.equals(action)) {
                 url = DASHBOARD_CONTROLLER;
+            } else if (CONFIRM_CHECKOUT.equals(action)) {
+                url = CONFIRM_CHECKOUT_CONTROLLER;
             }
 
         } catch (Exception e) {

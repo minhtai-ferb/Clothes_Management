@@ -4,18 +4,18 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/D:/FPTU/Term4/PRJ301/Assignment/ClothesManagement/src/java/sample/controllers/PayNowController.java</file>
-            <file>file:/D:/FPTU/Term4/PRJ301/Assignment/ClothesManagement/src/java/sample/address/AddressDAO.java</file>
-            <file>file:/D:/FPTU/Term4/PRJ301/Assignment/ClothesManagement/web/viewCheckout.jsp</file>
             <file>file:/D:/FPTU/Term4/PRJ301/Assignment/ClothesManagement/src/java/sample/users/UserDAO.java</file>
+            <file>file:/D:/FPTU/Term4/PRJ301/Assignment/ClothesManagement/web/viewCheckout.jsp</file>
             <file>file:/D:/FPTU/Term4/PRJ301/Assignment/ClothesManagement/src/java/sample/order/OrderDetailDAO.java</file>
             <file>file:/D:/FPTU/Term4/PRJ301/Assignment/ClothesManagement/web/create.jsp</file>
-            <file>file:/D:/FPTU/Term4/PRJ301/Assignment/ClothesManagement/src/java/sample/controllers/DeleteController.java</file>
+            <file>file:/D:/FPTU/Term4/PRJ301/Assignment/ClothesManagement/web/dashboard.jsp</file>
+            <file>file:/D:/FPTU/Term4/PRJ301/Assignment/ClothesManagement/src/java/sample/controllers/UpdateController.java</file>
             <file>file:/D:/FPTU/Term4/PRJ301/Assignment/ClothesManagement/src/java/sample/utils/Email.java</file>
             <file>file:/D:/FPTU/Term4/PRJ301/Assignment/ClothesManagement/src/java/sample/controllers/MainController.java</file>
+            <file>file:/D:/FPTU/Term4/PRJ301/Assignment/ClothesManagement/src/java/sample/controllers/ConfirmCheckoutController.java</file>
             <file>file:/D:/FPTU/Term4/PRJ301/Assignment/ClothesManagement/src/java/sample/controllers/SearchController.java</file>
-            <file>file:/D:/FPTU/Term4/PRJ301/Assignment/ClothesManagement/src/java/sample/order/OrderDAO.java</file>
             <file>file:/D:/FPTU/Term4/PRJ301/Assignment/ClothesManagement/web/account.jsp</file>
-            <file>file:/D:/FPTU/Term4/PRJ301/Assignment/ClothesManagement/web/viewCart.jsp</file>
+            <file>file:/D:/FPTU/Term4/PRJ301/Assignment/ClothesManagement/web/paySuccess.jsp</file>
         </group>
     </open-files>
 </project-private>

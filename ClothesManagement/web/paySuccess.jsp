@@ -62,6 +62,7 @@
                         <c:set var="address" value="${sessionScope.ADDRESS}"/>
                         <c:set var="user" value="${sessionScope.LOGIN_USER}"/>
                         <c:set var="order" value="${sessionScope.ORDER}"/>
+                        <c:set var="paymentType" value="${requestScope.PAYMENT_TYPE}"/>
                         <h1>Pay Success</h1>
                         <p>Thank you, ${user.userName}</p>
                         <h4>Order</h4>
@@ -74,7 +75,10 @@
                         <p>City: ${address.city}</p>
                         <p>District: ${address.district}</p>
                         <p>Wards: ${address.wards}</p>
-                        <p>Phone: ${address.phone}</p>                                                                                                                                 
+                        <p>Phone: ${address.phone}</p>
+                        <h4>Payment</h4>
+                        <p>Pay with: ${paymentType}</p>
+                        <p>Status: ${order.status}</p>
                     </div>
                 </div>
                 <div class="container-fluid" style="padding: 0; margin: 0; width: 50hv; display: flex; flex-direction: column; align-self: center; justify-content: start; margin: 0; border-left: 0.5px solid rgb(165, 165, 165); height: 100%; background-color: #e8e8e8;">

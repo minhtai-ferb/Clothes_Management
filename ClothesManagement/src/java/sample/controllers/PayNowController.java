@@ -47,6 +47,7 @@ public class PayNowController extends HttpServlet {
             HttpSession session = request.getSession();
             UserDTO loginUser = (UserDTO) session.getAttribute("LOGIN_USER");
             Cart cart = (Cart) session.getAttribute("CART");
+            String paymentType = (String) session.getAttribute("PAYMENT_TYPE");
             //handle address
             AddressDTO userAddress = (AddressDTO) session.getAttribute("ADDRESS");
             AddressDAO daoAddress = new AddressDAO();
@@ -62,14 +63,17 @@ public class PayNowController extends HttpServlet {
                 String status = "PRIMARY";
                 checkInsert = daoAddress.insertAddress(new AddressDTO(userID, fullName, phone, city, district, wards, addressHouse, status));
                 userAddress = daoAddress.getAddress(loginUser.getUserID(), "PRIMARY");
+                session.setAttribute("ADDRESS", userAddress); 
             } else if (!daoAddress.checkDulicate(new AddressDTO(userID, fullName, phone, city, district, wards, addressHouse))) {
                 String status = "NORMAL";
                 checkInsert = daoAddress.insertAddress(new AddressDTO(userID, fullName, phone, city, district, wards, addressHouse, status));
                 userAddress = daoAddress.getAddress(new AddressDTO(userID, fullName, phone, city, district, wards, addressHouse));
+                session.setAttribute("ADDRESS", userAddress); 
             } else {
                 userAddress = daoAddress.getAddress(new AddressDTO(userID, fullName, phone, city, district, wards, addressHouse));
                 if (userAddress != null) {
                     checkInsert = true;
+                    session.setAttribute("ADDRESS", userAddress); 
                 }
             }
 
@@ -78,7 +82,12 @@ public class PayNowController extends HttpServlet {
                 OrderDAO daoOrder = new OrderDAO();
                 int orderID = daoOrder.countOrder() + 1;
                 Date currentTime = new Date();
-                String status = "SUCCESS";
+                String status = null;
+                if (paymentType.equalsIgnoreCase("delivery")) {
+                    status = "PAYING";
+                } else if (paymentType.equalsIgnoreCase("VNBANK")) {
+                    status = "SUCCESS";
+                }
                 double total = Double.parseDouble(request.getParameter("totalCart"));
                 OrderDTO order = new OrderDTO(orderID, loginUser.getUserID(), currentTime, total, userAddress.getAddressID(), status);
                 boolean checkOrder = daoOrder.insert(order);
@@ -108,6 +117,7 @@ public class PayNowController extends HttpServlet {
                         Email mail = new Email();
                         boolean checkMail = mail.sendEmail(loginUser.getEmail(), "Your order has been completed", "hihihihihihhihihi");
                         if (checkMail) {
+                            cart.getCart().clear();
                             url = SUCCESS;
                         } else {
                             session.setAttribute("PAY_ERROR", "Can't send mail.");
