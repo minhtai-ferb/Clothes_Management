@@ -108,8 +108,8 @@
                                 <input type="text" name="phone" value="${address.phone}" class="form-control" id="floatingInputValue" placeholder="Phone"/>
                                 <label for="floatingInputValue">Phone</label>
                             </div>
-                            <h4>Payment</h4>
-                            <select name="payment" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+                            <h4>Payment</h4>                           
+                            <select name="payment" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" style="width: 100%; font-size: 15px;">
                                 <option value="delivery">Payment on delivery</option>
                                 <option value="VNBANK">Payment via ATM card/Domestic account</option>
                             </select>

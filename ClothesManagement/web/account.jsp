@@ -309,7 +309,7 @@
                         <input type="text" name="" id="search" placeholder="Search...">
                     </div>                
                 </section>
-                <p class="text-danger">${requestScope.ERROR}</p>
+                <p class="text-danger" style="text-align: center;">${requestScope.ERROR}</p>
                 <c:if test="${requestScope.LIST_USER != null}">
                     <c:if test="${not empty requestScope.LIST_USER}">
                         <section class="field">
@@ -345,7 +345,15 @@
                                             <input style="width: 100%; border: none;  text-align: center;"  type= "password" name="password" value="${user.password}" readonly=""/>
                                         </td>
                                         <td style="width: 5rem;">
-                                            <input style="width: 100%; border: none; text-align: center;" type="text" name="roleID" value="${user.roleID}" required=""/>
+                                            <select class="" name="roleID" style="width: 100%; border: none; text-align: center; outline: none; padding: 0; margin: 0">
+                                                <option value="${user.roleID}">${user.roleID}</option>
+                                                <c:if test="${user.roleID eq 'US'}">
+                                                    <option value="AD">AD</option>
+                                                </c:if>
+                                                <c:if test="${user.roleID eq 'AD'}">
+                                                    <option value="US">US</option>
+                                                </c:if>
+                                            </select>
                                         </td>
                                         <td style="width: 5rem; text-align: center;">
                                             <input type="hidden" name="status" value="${user.status}" class="statusInput" />
@@ -441,10 +449,10 @@
         const searchInput = document.getElementById("search");
         const tableRows = document.querySelectorAll("table tbody tr");
 
-        searchInput.addEventListener("input", function() {
+        searchInput.addEventListener("input", function () {
             const searchText = searchInput.value.toLowerCase();
 
-            tableRows.forEach(function(row) {
+            tableRows.forEach(function (row) {
                 const userName = row.querySelector("td:nth-child(4) input").value.toLowerCase();
 
                 if (userName.includes(searchText)) {
@@ -454,7 +462,7 @@
                 }
             });
         });
-        
+
         var el = document.getElementById("wrapper");
         var toggleButton = document.getElementById("menu-toggle");
 

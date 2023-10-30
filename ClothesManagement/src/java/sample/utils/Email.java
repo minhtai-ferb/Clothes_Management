@@ -14,6 +14,7 @@ import javax.mail.Transport;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.util.Date;
 
 /**
  *
@@ -71,6 +72,31 @@ public class Email {
             e.printStackTrace();
         }
         return check;
+    }
+
+    public String emailSample(String userName, Date orderDate, double totalBill, String email, String nameAddress, String address, String city, String district, String wards, String phone, String typePay, String status) {
+        String mail = "<html>\n"
+                + "    <body>\n"
+                + "        <h1>Pay Success</h1>\n"
+                + "        <p>Thank you, " + userName + "</p>\n"
+                + "        <h4>Order</h4>\n"
+                + "        <p>Order Day: " + orderDate + "</p>  \n"
+                + "        <p>Total bill: $" + totalBill + "</p>\n"
+                + "        <h4>Contact</h4> \n"
+                + "        <p>Email address: " + email + "</p>\n"
+                + "        <h4>Delivery</h4>\n"
+                + "        <p>Full Name: " + nameAddress + "</p>\n"
+                + "        <p>Address: " + address + "</p>\n"
+                + "        <p>City: " + city + "</p>\n"
+                + "        <p>District: " + district + "</p>\n"
+                + "        <p>Wards: " + wards + "</p>\n"
+                + "        <p>Phone: " + phone + "</p>\n"
+                + "        <h4>Payment</h4>\n"
+                + "        <p>Pay with: " + typePay + "</p>\n"
+                + "        <p>Status: " + status + "</p>\n"
+                + "    </body>\n"
+                + "</html>";
+        return mail;
     }
 
 }

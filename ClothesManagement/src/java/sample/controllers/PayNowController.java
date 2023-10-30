@@ -48,6 +48,7 @@ public class PayNowController extends HttpServlet {
             UserDTO loginUser = (UserDTO) session.getAttribute("LOGIN_USER");
             Cart cart = (Cart) session.getAttribute("CART");
             String paymentType = (String) session.getAttribute("PAYMENT_TYPE");
+            String typePaying = null;
             //handle address
             AddressDTO userAddress = (AddressDTO) session.getAttribute("ADDRESS");
             AddressDAO daoAddress = new AddressDAO();
@@ -59,6 +60,7 @@ public class PayNowController extends HttpServlet {
             String wards = request.getParameter("wards");
             String addressHouse = request.getParameter("address");
             boolean checkInsert = false;
+            
             if (userAddress == null) {
                 String status = "PRIMARY";
                 checkInsert = daoAddress.insertAddress(new AddressDTO(userID, fullName, phone, city, district, wards, addressHouse, status));
@@ -84,8 +86,10 @@ public class PayNowController extends HttpServlet {
                 Date currentTime = new Date();
                 String status = null;
                 if (paymentType.equalsIgnoreCase("delivery")) {
+                    typePaying = "Payment on delivery.";
                     status = "PAYING";
                 } else if (paymentType.equalsIgnoreCase("VNBANK")) {
+                    typePaying = "Payment via ATM card/Domestic account.";
                     status = "SUCCESS";
                 }
                 double total = Double.parseDouble(request.getParameter("totalCart"));
@@ -115,7 +119,8 @@ public class PayNowController extends HttpServlet {
                         order.setOrderDetail(orderDetail);
                         session.setAttribute("ORDER", order);
                         Email mail = new Email();
-                        boolean checkMail = mail.sendEmail(loginUser.getEmail(), "Your order has been completed", "hihihihihihhihihi");
+                        String content = mail.emailSample(loginUser.getUserName() , currentTime, total, loginUser.getEmail(), fullName, addressHouse, city, district, wards, phone, typePaying, status);
+                        boolean checkMail = mail.sendEmail(loginUser.getEmail(), "Your order has been completed", content);
                         if (checkMail) {
                             cart.getCart().clear();
                             url = SUCCESS;

@@ -6,6 +6,8 @@
 package sample.controllers;
 
 import java.io.IOException;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -39,15 +41,41 @@ public class UpdateController extends HttpServlet {
             HttpSession sesison = request.getSession();
             UserDTO loginUser = (UserDTO) sesison.getAttribute("LOGIN_USER");
             UserDTO user = new UserDTO(userID, userName, email, "", roleID, status);
+            boolean check = true;
 
-            boolean checkUpdate = dao.update(user);
-            if (checkUpdate) {
-                if (loginUser.getUserID() == userID) {
-                    sesison.setAttribute("LOGIN_USER", user);
+            try {
+                InternetAddress internetAddress = new InternetAddress(email, false);
+                internetAddress.validate();
+            } catch (AddressException e) {
+                check = false;
+                if (e.toString().contains("@")) {
+                    request.setAttribute("ERROR", "Please include an '@' in the email address. '" + email + "' is missing an '@'.");
+                } else {
+                    request.setAttribute("ERROR", email + " is a valid email.");
                 }
-                url = SUCCESS;
-            } else {
-                request.setAttribute("ERROR", "Can't update account!");
+            }
+            boolean checkEmail = dao.checkDuplicate(email);
+            if (checkEmail) {
+                check = false;
+                request.setAttribute("ERROR", "This email address is already associated with an account");
+            }
+
+            if (check) {
+                if (loginUser != null) {
+                    if (loginUser.getUserID() == userID) {
+                        request.setAttribute("ERROR", "The currently logged in account cannot be update!");
+                    } else {
+                        boolean checkUpdate = dao.update(user);
+                        if (checkUpdate) {
+                            if (loginUser.getUserID() == userID) {
+                                sesison.setAttribute("LOGIN_USER", user);
+                            }
+                            url = SUCCESS;
+                        } else {
+                            request.setAttribute("ERROR", "Can't update account!");
+                        }
+                    }
+                }
             }
         } catch (Exception e) {
             log("Error at DeleteController: " + e.toString());

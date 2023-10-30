@@ -43,7 +43,7 @@ public class DeleteController extends HttpServlet {
             UserDTO loginUser = (UserDTO) sesison.getAttribute("LOGIN_USER");
             if (loginUser != null) {
                 if (loginUser.getUserID() == userID) {
-                    request.setAttribute("ERROR", "User dang login, ko duoc xoa!");
+                    request.setAttribute("ERROR", "The currently logged in account cannot be deleted!");
                 } else {
                     boolean checkDelete = daoOrderDetail.delete(userID);
                     if (checkDelete) {
