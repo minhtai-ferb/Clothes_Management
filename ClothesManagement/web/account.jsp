@@ -339,7 +339,7 @@
                                             <input style="width: 100%; border: none;" type="text" name="userName" value="${user.userName}" required="" id="userName-${user.userID}"/>
                                         </td>
                                         <td style="width: 20rem;">
-                                            <input style="width: 100%; border: none;" type="text" name="email" value="${user.email}" required=""/>
+                                            <input style="width: 100%; border: none;" type="text" name="email" value="${user.email}" readonly=""/>
                                         </td>
                                         <td style="width: 7rem;">
                                             <input style="width: 100%; border: none;  text-align: center;"  type= "password" name="password" value="${user.password}" readonly=""/>

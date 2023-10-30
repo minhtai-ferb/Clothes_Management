@@ -41,24 +41,7 @@ public class UpdateController extends HttpServlet {
             HttpSession sesison = request.getSession();
             UserDTO loginUser = (UserDTO) sesison.getAttribute("LOGIN_USER");
             UserDTO user = new UserDTO(userID, userName, email, "", roleID, status);
-            boolean check = true;
-
-            try {
-                InternetAddress internetAddress = new InternetAddress(email, false);
-                internetAddress.validate();
-            } catch (AddressException e) {
-                check = false;
-                if (e.toString().contains("@")) {
-                    request.setAttribute("ERROR", "Please include an '@' in the email address. '" + email + "' is missing an '@'.");
-                } else {
-                    request.setAttribute("ERROR", email + " is a valid email.");
-                }
-            }
-            boolean checkEmail = dao.checkDuplicate(email);
-            if (checkEmail) {
-                check = false;
-                request.setAttribute("ERROR", "This email address is already associated with an account");
-            }
+            boolean check = true;        
 
             if (check) {
                 if (loginUser != null) {

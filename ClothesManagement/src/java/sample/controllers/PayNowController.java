@@ -50,36 +50,8 @@ public class PayNowController extends HttpServlet {
             String paymentType = (String) session.getAttribute("PAYMENT_TYPE");
             String typePaying = null;
             //handle address
-            AddressDTO userAddress = (AddressDTO) session.getAttribute("ADDRESS");
-            AddressDAO daoAddress = new AddressDAO();
-            int userID = loginUser.getUserID();
-            String fullName = request.getParameter("fullName");
-            String phone = request.getParameter("phone");
-            String city = request.getParameter("city");
-            String district = request.getParameter("district");
-            String wards = request.getParameter("wards");
-            String addressHouse = request.getParameter("address");
-            boolean checkInsert = false;
-            
-            if (userAddress == null) {
-                String status = "PRIMARY";
-                checkInsert = daoAddress.insertAddress(new AddressDTO(userID, fullName, phone, city, district, wards, addressHouse, status));
-                userAddress = daoAddress.getAddress(loginUser.getUserID(), "PRIMARY");
-                session.setAttribute("ADDRESS", userAddress); 
-            } else if (!daoAddress.checkDulicate(new AddressDTO(userID, fullName, phone, city, district, wards, addressHouse))) {
-                String status = "NORMAL";
-                checkInsert = daoAddress.insertAddress(new AddressDTO(userID, fullName, phone, city, district, wards, addressHouse, status));
-                userAddress = daoAddress.getAddress(new AddressDTO(userID, fullName, phone, city, district, wards, addressHouse));
-                session.setAttribute("ADDRESS", userAddress); 
-            } else {
-                userAddress = daoAddress.getAddress(new AddressDTO(userID, fullName, phone, city, district, wards, addressHouse));
-                if (userAddress != null) {
-                    checkInsert = true;
-                    session.setAttribute("ADDRESS", userAddress); 
-                }
-            }
-
-            if (checkInsert) {
+            AddressDTO userAddress = (AddressDTO) session.getAttribute("ADDRESS");          
+            if (userAddress != null) {
                 //handle order
                 OrderDAO daoOrder = new OrderDAO();
                 int orderID = daoOrder.countOrder() + 1;
@@ -90,9 +62,10 @@ public class PayNowController extends HttpServlet {
                     status = "PAYING";
                 } else if (paymentType.equalsIgnoreCase("VNBANK")) {
                     typePaying = "Payment via ATM card/Domestic account.";
+                    request.setAttribute("PAYMENT_TYPE", "Payment via ATM card/Domestic account");
                     status = "SUCCESS";
                 }
-                double total = Double.parseDouble(request.getParameter("totalCart"));
+                double total = (double) session.getAttribute("TOTAL_PRICE");
                 OrderDTO order = new OrderDTO(orderID, loginUser.getUserID(), currentTime, total, userAddress.getAddressID(), status);
                 boolean checkOrder = daoOrder.insert(order);
                 if (checkOrder) {
@@ -119,7 +92,7 @@ public class PayNowController extends HttpServlet {
                         order.setOrderDetail(orderDetail);
                         session.setAttribute("ORDER", order);
                         Email mail = new Email();
-                        String content = mail.emailSample(loginUser.getUserName() , currentTime, total, loginUser.getEmail(), fullName, addressHouse, city, district, wards, phone, typePaying, status);
+                        String content = mail.emailSample(loginUser.getUserName() , currentTime, total, loginUser.getEmail(), userAddress.getFullName(), userAddress.getAddressHouse(), userAddress.getCity(), userAddress.getDistrict(), userAddress.getWards(), userAddress.getPhone(), typePaying, status);
                         boolean checkMail = mail.sendEmail(loginUser.getEmail(), "Your order has been completed", content);
                         if (checkMail) {
                             cart.getCart().clear();
